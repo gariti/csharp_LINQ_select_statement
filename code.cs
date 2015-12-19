@@ -16,15 +16,32 @@ namespace UnderstandingLINQ
                 new Car() { Make="Ford", Model="Escape", Color=CarColor.White, StickerPrice=28000, Year=2008 },
                 new Car() { Make="BMW", Model="550i", Color=CarColor.Black, StickerPrice=57000, Year=2010 }
             };
+            // (LINQ method syntax style) selecting from a collection - BMW's from yr 2010
+            var _bmws = myCars.Where(p => p.Year == 2010).Where(p => p.Make == "BMW");
 
+            //(LINQ method syntax style) order collection by Year
+            var _orderedCars = myCars.OrderByDescending(p => p.Year);
 
-            // Linq select statement- BMW's from yr 2010 or 2008
+            //(LINQ method syntax style) sum all sticker prices
+            var sum = myCars.Sum(p => p.StickerPrice);
+
+            //(LINQ querery syntax) selecting from a collection- BMW's from yr 2010 or 2008
             var bmws = from car in myCars
                        where car.Make == "BMW"
-                       && (car.Year == 2010 || car.Year == 2008)
-                       select car;
+                       && car.Year == 2010
+                       select new { car.Make, car.Model, car.Year }; //new data type
 
-            foreach (var car in bmws)
+            //(LINQ querery syntax) myCars listed from oldest to newest
+            var orderedCarsOld = from car in myCars
+                              orderby car.Year
+                              select car;
+
+            //(LINQ querery syntax) myCars listed from newest to oldest
+            var orderedCarsNew = from car in myCars
+                              orderby car.Year descending
+                              select car;
+
+            foreach (var car in orderedCarsOld)
             {
                 Console.WriteLine("{0} {1} - {2}", car.Make, car.Model, car.Year);
             }
